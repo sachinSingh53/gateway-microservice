@@ -1,7 +1,8 @@
-const {GatewayServer} = require('./server');
-const express = require('express');
-class Application{
-    init(){
+import { GatewayServer } from './server.js';
+import express from 'express';
+
+class Application {
+    init() {
         const app = express();
         const server = new GatewayServer(app);
         server.start();
@@ -9,5 +10,4 @@ class Application{
 }
 
 const application = new Application();
-
 application.init();

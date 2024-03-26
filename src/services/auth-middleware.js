@@ -1,14 +1,15 @@
-const jwt = require('jsonwebtoken');
-const config = require('../config');
-const { NotAuthorizedError } = require('../../../9-jobber-shared/src/errors');
+import jwt from 'jsonwebtoken';
+import config from '../config.js';
+import { NotAuthorizedError } from '../../../9-jobber-shared/src/errors.js';
+
 class AuthMiddleware {
 
-    verifyUser(req,res,next){
-        if(!req.session.jwt){
+    verifyUser(req, res, next) {
+        if (!req.session.jwt) {
             throw new NotAuthorizedError('Token is not available. Please login again.', 'GatewayService verifyUser() method error')
         }
         try {
-            const payload = jwt.verify(req.session.jwt,`${config.JWT_TOKEN}`);
+            const payload = jwt.verify(req.session.jwt, `${config.JWT_TOKEN}`);
             req.currentUser = payload;
         } catch (err) {
             throw new NotAuthorizedError('Token is not available. Please login again.', 'GatewayService verifyUser() method invalid session error');
@@ -16,8 +17,8 @@ class AuthMiddleware {
         next();
     }
 
-    checkAuthentication(req,res,next){
-        if(!req.currentUser){
+    checkAuthentication(req, res, next) {
+        if (!req.currentUser) {
             throw new NotAuthorizedError('Authentication is required to access this route.', 'GatewayService checkAuthentication() method error');
         }
         next();
@@ -26,4 +27,4 @@ class AuthMiddleware {
 
 const authMiddleware = new AuthMiddleware();
 
-module.exports = authMiddleware;
+export default authMiddleware;

@@ -1,13 +1,12 @@
-const express = require('express');
-const router = express.Router({});
-const authController = require('../controllers/auth/signup')
+import express from 'express';
+import { create as createAuth } from '../controllers/auth/signup.js';
 
+const router = express.Router();
 
-
-router.post('/auth/signup',authController.create);
+router.post('/auth/signup', createAuth);
 
 // router.get('/check',(req,res)=>{
 //     res.send('working fine');
 // })
 
-module.exports = router;
+export default router;

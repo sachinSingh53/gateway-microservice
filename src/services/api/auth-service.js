@@ -1,6 +1,6 @@
-const axios = require('axios');
-const { AxiosService } = require('../axios');
-const config = require('../../config');
+import axios from 'axios';
+import { AxiosService } from '../axios.js';
+import config from '../../config.js';
 
 let axiosAuthInstance;
 
@@ -73,4 +73,4 @@ class AuthService {
 }
 const authService = new AuthService();
 
-module.exports = { authService, axiosAuthInstance };
+export { authService, axiosAuthInstance };

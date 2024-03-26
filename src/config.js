@@ -1,6 +1,6 @@
-require('dotenv').config()
+import dotenv from 'dotenv';
 
-console.log(process.env.GATEWAY_JWT_TOKEN);
+dotenv.config();
 
 class Config {
     constructor() {
@@ -22,4 +22,4 @@ class Config {
 
 const config = new Config();
 
-module.exports = config;
+export default config;

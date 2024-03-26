@@ -1,30 +1,30 @@
-const axios = require('axios');
-const jwt = require('jsonwebtoken');
-const config = require('../config');
+import axios from 'axios';
+import jwt from 'jsonwebtoken';
+import config from '../config.js';
 
-class AxiosService{
-    constructor(baseUrl,serviceName){
-        this.axios = this.axiosCreateInstance(baseUrl,serviceName);
+class AxiosService {
+    constructor(baseUrl, serviceName) {
+        this.axios = this.axiosCreateInstance(baseUrl, serviceName);
     }
 
-    axiosCreateInstance(baseUrl,serviceName){
+    axiosCreateInstance(baseUrl, serviceName) {
         let requestGatewayToken = '';
 
-        if(serviceName){
-            requestGatewayToken = jwt.sign({id:serviceName},`${config.GATEWAY_JWT_TOKEN}`);
+        if (serviceName) {
+            requestGatewayToken = jwt.sign({ id: serviceName }, `${config.GATEWAY_JWT_TOKEN}`);
         }
         const instance = axios.create({
-            baseURL:baseUrl,
-            headers:{
-                'Content-Type':'application/json',
-                Accept: 'application/json',
-                gatewayToken: requestGatewayToken
+            baseURL: baseUrl,
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'gatewayToken': requestGatewayToken
             },
-            withCredentials:true
+            withCredentials: true
         });
 
         return instance;
     }
 }
 
-module.exports = {AxiosService}
+export { AxiosService };
