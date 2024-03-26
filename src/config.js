@@ -1,4 +1,7 @@
 require('dotenv').config()
+
+console.log(process.env.GATEWAY_JWT_TOKEN);
+
 class Config {
     constructor() {
         this.GATEWAY_JWT_TOKEN = process.env.GATEWAY_JWT_TOKEN;

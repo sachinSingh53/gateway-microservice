@@ -1,8 +1,6 @@
-
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
-
 
 class AxiosService{
     constructor(baseUrl,serviceName){
@@ -17,9 +15,9 @@ class AxiosService{
         }
         const instance = axios.create({
             baseURL:baseUrl,
-            Headers:{
+            headers:{
                 'Content-Type':'application/json',
-                Acdept: 'application/json',
+                Accept: 'application/json',
                 gatewayToken: requestGatewayToken
             },
             withCredentials:true
