@@ -1,8 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 import { authService } from "../../services/api/auth-service.js";
 
-export const read = async (req, res) => {
-    const response = await authService.signIn(req.body);
+export const verifyEmail = async (req, res) => {
+    const response = await authService.verifyEmail(req.body.token);
 
     req.session = { jwt: response.data.token };
 
