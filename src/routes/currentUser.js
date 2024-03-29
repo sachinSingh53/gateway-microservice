@@ -8,8 +8,4 @@ router.get('/auth/currentuser',authMiddleware.verifyUser,authMiddleware.checkAut
 router.post('/auth/resend-email',authMiddleware.verifyUser,authMiddleware.checkAuthentication, resendEmail );
 router.get('/auth/refresh-token/:username',authMiddleware.verifyUser,authMiddleware.checkAuthentication, token );
 
-// router.get('/check',(req,res)=>{
-//     res.send('working fine');
-// })
-
 export default router;

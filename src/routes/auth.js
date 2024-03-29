@@ -11,9 +11,9 @@ router.post('/auth/signin', read);
 router.put('/auth/verify-email', verifyEmail);
 router.put('/auth/forgot-password', forgotPassword);
 router.put('/auth/reset-password/:token', resetPassword);
+
+//this is when user wants to change password by using its previous password
 router.put('/auth/change-password', changePassword);
-// router.get('/check',(req,res)=>{
-//     res.send('working fine');
-// })
+
 
 export default router;

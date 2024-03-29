@@ -5,6 +5,7 @@ import config from '../../config.js';
 let axiosAuthInstance;
 
 class AuthService {
+    
     constructor() {
         this.axiosService = new AxiosService(`${config.AUTH_BASE_URL}/api/v1/auth`, 'auth');
         axiosAuthInstance = this.axiosService.axios;
