@@ -3,9 +3,6 @@ import { authService } from "../../services/api/auth-service.js";
 
 export const verifyEmail = async (req, res) => {
     const response = await authService.verifyEmail(req.body.token);
-
-    req.session = { jwt: response.data.token };
-
     res.status(StatusCodes.OK).json({
         message: response.data.message,
         user: response.data.user
