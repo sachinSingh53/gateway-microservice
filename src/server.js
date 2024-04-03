@@ -10,6 +10,7 @@ import { StatusCodes } from 'http-status-codes';
 import { CustomError } from '../../9-jobber-shared/src/errors.js';
 import authRoutes from './routes/auth.js';
 import currentUserRoutes from './routes/currentUser.js';
+import searchRoutes from './routes/search.js'
 
 const log = winstonLogger('Gateway Server', 'debug');
 
@@ -63,6 +64,7 @@ class GatewayServer {
     #routesMiddleware(app) {
         app.use('/api/gateway/v1', authRoutes);
         app.use('/api/gateway/v1',currentUserRoutes)
+        app.use('/api/gateway/v1',searchRoutes);
     }
 
     #errorHandler(app) {
