@@ -1,4 +1,3 @@
-import express from 'express';
 import cookieSession from 'cookie-session';
 import cors from 'cors';
 import compression from 'compression';
@@ -11,6 +10,8 @@ import { CustomError } from '../../9-jobber-shared/src/errors.js';
 import authRoutes from './routes/auth.js';
 import currentUserRoutes from './routes/currentUser.js';
 import searchRoutes from './routes/search.js'
+import { axiosBuyerInstance } from './services/api/buyer-service.js';
+import { axiosSellerInstance } from './services/api/seller-service.js';
 
 const log = winstonLogger('Gateway Server', 'debug');
 
@@ -50,6 +51,8 @@ class GatewayServer {
         app.use((req, _res, next) => {
             if (req.session.jwt) {
                 axiosAuthInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
+                axiosBuyerInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
+                axiosSellerInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
             }
             next();
         });
