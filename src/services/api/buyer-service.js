@@ -18,7 +18,7 @@ class BuyerService{
         const response = await axiosBuyerInstance.get(`/${username}`);
         return response;
     }  
-    async getUserByEmail(){
+    async getBuyerByEmail(){
         const response = await axiosBuyerInstance.get('/email');
         return response;
     }

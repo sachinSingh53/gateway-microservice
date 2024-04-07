@@ -18,8 +18,8 @@ class SellerService{
         const response = await axiosSellerInstance.get(`/username/${username}`);
         return response;
     }
-    async getRandomSellers(){
-        const response = await axiosSellerInstance.get('/random');
+    async getRandomSellers(count){
+        const response = await axiosSellerInstance.get(`/random/${count}`);
         return response;
     }
     async createSeller(body){
@@ -31,7 +31,8 @@ class SellerService{
         return response;
     }
     async seed(count){
-        const response = await axiosSellerInstance.put(`/seed/${count}`);
+
+        const response = await axiosSellerInstance.post(`/seed/${count}`);
         return response;
     }
 }

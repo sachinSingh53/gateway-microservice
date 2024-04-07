@@ -7,11 +7,15 @@ import { axiosAuthInstance } from './services/api/auth-service.js';
 import { winstonLogger } from '../../9-jobber-shared/src/logger.js';
 import { StatusCodes } from 'http-status-codes';
 import { CustomError } from '../../9-jobber-shared/src/errors.js';
+import { axiosBuyerInstance } from './services/api/buyer-service.js';
+import { axiosSellerInstance } from './services/api/seller-service.js';
+
 import authRoutes from './routes/auth.js';
 import currentUserRoutes from './routes/currentUser.js';
 import searchRoutes from './routes/search.js'
-import { axiosBuyerInstance } from './services/api/buyer-service.js';
-import { axiosSellerInstance } from './services/api/seller-service.js';
+import buyerRoutes from './routes/buyer.js'
+import sellerRoutes from './routes/seller.js'
+
 
 const log = winstonLogger('Gateway Server', 'debug');
 
@@ -68,6 +72,8 @@ class GatewayServer {
         app.use('/api/gateway/v1', authRoutes);
         app.use('/api/gateway/v1',currentUserRoutes)
         app.use('/api/gateway/v1',searchRoutes);
+        app.use('/api/gateway/v1',buyerRoutes);
+        app.use('/api/gateway/v1',sellerRoutes);
     }
 
     #errorHandler(app) {
