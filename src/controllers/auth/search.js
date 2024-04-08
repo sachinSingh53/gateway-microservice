@@ -2,7 +2,8 @@ import {authService} from '../../services/api/auth-service.js'
 import {StatusCodes} from 'http-status-codes'
 
 export async function gigById(req,res){
-    const response = await authService.getGig(req.params.id);
+    const response = await authService.getGig(req.params.gigId);
+
     res.status(StatusCodes.OK).json({
         message:response.data.message,
         gig: response.data.gig
@@ -21,7 +22,7 @@ export async function gigs(req,res){
     objList.forEach(([key,value],index)=>{
         query+= `${key}=${value}${index !== lastIndex ? '&' : ''}`
     });
-    console.log('query after',query);
+    console.log(query);
 
     const response = await authService.getGigs(query,from,size,type);
 
