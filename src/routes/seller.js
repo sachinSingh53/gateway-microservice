@@ -9,10 +9,10 @@ const router = express.Router();
 
 router.get('/seller/id/:sellerId',authMiddleware.verifyUser,authMiddleware.checkAuthentication,id)
 router.get('/seller/username/:username',authMiddleware.verifyUser,authMiddleware.checkAuthentication,username);
-router.get('/seller/random/:count',authMiddleware.verifyUser,authMiddleware.verifyUser,random); 
-router.post('/seller/create',authMiddleware.verifyUser,authMiddleware.verifyUser,seller); 
-router.put('/seller/:sellerId',authMiddleware.verifyUser,authMiddleware.verifyUser,updateSeller); 
-router.post('/seller/seed/:count',authMiddleware.verifyUser,authMiddleware.verifyUser,seedSeller); 
+router.get('/seller/random/:count',authMiddleware.verifyUser,authMiddleware.checkAuthentication,random); 
+router.post('/seller/create',authMiddleware.verifyUser,authMiddleware.checkAuthentication,seller); 
+router.put('/seller/:sellerId',authMiddleware.verifyUser,authMiddleware.checkAuthentication,updateSeller); 
+router.post('/seller/seed/:count',authMiddleware.verifyUser,authMiddleware.checkAuthentication,seedSeller); 
 
 
 export default router;

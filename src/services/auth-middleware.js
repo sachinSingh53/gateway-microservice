@@ -6,6 +6,7 @@ class AuthMiddleware {
 
     verifyUser(req, res, next) {
         if (!req.session.jwt) {
+            
             throw new NotAuthorizedError('Token is not available. Please login again.', 'GatewayService verifyUser() method error')
         }
         try {
