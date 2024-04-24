@@ -74,7 +74,3 @@ export class GatewayCache{
         }
     }
 }
-
-const redisConnection = new RedisConnection();
-
-export{redisConnection};

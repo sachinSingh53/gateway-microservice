@@ -1,3 +1,5 @@
+import http from 'http';
+
 import cookieSession from 'cookie-session';
 import cors from 'cors';
 import compression from 'compression';
@@ -100,12 +102,22 @@ class GatewayServer {
 
     #startServer(app) {
         try {
+            const httpServer = http.Server(app);
+            this.#startHttpServer(httpServer);
+        } catch (error) {
+            log.log('error', 'GatewayService startServer() error method:', error);
+        }
+    }
+
+    #startHttpServer(httpServer){
+        try {
             const SERVER_PORT = 4000;
-            app.listen(SERVER_PORT, () => {
-                log.info(`Gateway server is listening on PORT: ${SERVER_PORT}`);
-            });
-        } catch (err) {
-            log.error('GatewayService startServer() error method:', err);
+            log.info(`Gateway server has started with processId: ${process.pid}`);
+            httpServer.listen(SERVER_PORT,()=>{
+                log.info(`GatewayServer is running on port ${SERVER_PORT}`);
+            })
+        } catch (error) {
+            log.log('error', 'GatewayService startServer() error method:', error)
         }
     }
 }
