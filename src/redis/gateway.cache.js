@@ -8,8 +8,6 @@ export class GatewayCache{
     constructor(){
         this.client = createClient({ url: `${config.REDIS_HOST}` });
     }
-
-   
     
     async saveUserSelectedCategory(key,value){
         try{
@@ -41,7 +39,7 @@ export class GatewayCache{
             return [];
         }
     }
-    async getLoggedInUsersFromCache(key,value){
+    async getLoggedInUsersFromCache(key){
         try{
             if(!this.client.isOpen){
                 await this.client.connect();

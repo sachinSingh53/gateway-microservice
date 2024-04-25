@@ -1,10 +1,10 @@
 import http from 'http';
-
 import cookieSession from 'cookie-session';
 import cors from 'cors';
 import compression from 'compression';
 import bodyParser from 'body-parser';
 import config from './config.js';
+
 import { axiosAuthInstance } from './services/api/auth-service.js';
 import { winstonLogger } from '../../9-jobber-shared/src/logger.js';
 import { StatusCodes } from 'http-status-codes';
@@ -12,6 +12,10 @@ import { CustomError } from '../../9-jobber-shared/src/errors.js';
 import { axiosBuyerInstance } from './services/api/buyer-service.js';
 import { axiosSellerInstance } from './services/api/seller-service.js';
 import { axiosGigInstance } from './services/api/gig-service.js';
+import { Server } from 'socket.io';
+import { createClient } from "redis";
+import { createAdapter } from "@socket.io/redis-adapter";
+import {socketIOAppHandler} from './sockets/socket.js'
 
 import authRoutes from './routes/auth.js';
 import currentUserRoutes from './routes/currentUser.js';
@@ -22,7 +26,7 @@ import gigRoutes from './routes/gig.js'
 
 
 const log = winstonLogger('Gateway Server', 'debug');
-
+ let socketIO;
 class GatewayServer {
     #app;
 
@@ -35,7 +39,8 @@ class GatewayServer {
         this.#standardMiddleware(this.#app);
         this.#routesMiddleware(this.#app);
         this.#errorHandler(this.#app);
-        this.#startServer(this.#app);
+        const socketIO = this.#startServer(this.#app);
+        return socketIO;
     }
 
     #securityMiddleware(app) {
@@ -75,11 +80,11 @@ class GatewayServer {
 
     #routesMiddleware(app) {
         app.use('/api/gateway/v1', authRoutes);
-        app.use('/api/gateway/v1',currentUserRoutes)
-        app.use('/api/gateway/v1',searchRoutes);
-        app.use('/api/gateway/v1',buyerRoutes);
-        app.use('/api/gateway/v1',sellerRoutes);
-        app.use('/api/gateway/v1',gigRoutes);
+        app.use('/api/gateway/v1', currentUserRoutes)
+        app.use('/api/gateway/v1', searchRoutes);
+        app.use('/api/gateway/v1', buyerRoutes);
+        app.use('/api/gateway/v1', sellerRoutes);
+        app.use('/api/gateway/v1', gigRoutes);
     }
 
     #errorHandler(app) {
@@ -100,25 +105,55 @@ class GatewayServer {
         });
     }
 
-    #startServer(app) {
+    async #CreateSocketIO(httpServer) {
+        const io = new Server(httpServer, {
+            cors: {
+                origin: `${config.CLIENT_URL}`,
+                methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+            }
+        }) 
+
+        //The @socket.io/redis-adapter package allows broadcasting packets between multiple Socket.IO servers.
+        const pubClient = createClient({ url: `${config.REDIS_HOST}` });
+        const subClient = pubClient.duplicate();
+
+        await Promise.all([
+            pubClient.connect(),
+            subClient.connect()
+        ]);
+
+        io.adapter(createAdapter(pubClient,subClient));
+        return io;
+
+    }
+
+    async #startServer(app) {
         try {
             const httpServer = http.Server(app);
             this.#startHttpServer(httpServer);
+            const socketIO = await this.#CreateSocketIO(httpServer);
+
+            this.#socketIOConnections(socketIO);
+            return socketIO;
         } catch (error) {
             log.log('error', 'GatewayService startServer() error method:', error);
         }
     }
 
-    #startHttpServer(httpServer){
+    #startHttpServer(httpServer) {
         try {
             const SERVER_PORT = 4000;
             log.info(`Gateway server has started with processId: ${process.pid}`);
-            httpServer.listen(SERVER_PORT,()=>{
+            httpServer.listen(SERVER_PORT, () => {
                 log.info(`GatewayServer is running on port ${SERVER_PORT}`);
             })
         } catch (error) {
             log.log('error', 'GatewayService startServer() error method:', error)
         }
+    }
+    #socketIOConnections(io){
+        const socketIoApp = new socketIOAppHandler(io);
+        socketIoApp.listen();
     }
 }
 

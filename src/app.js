@@ -1,16 +1,25 @@
 import { GatewayServer } from './server.js';
 import express from 'express';
 import { redisConnection } from './redis/redis.connection.js';
+
 class Application {
-    init() {
+    async init() {
         const app = express();
         const server = new GatewayServer(app);
-        server.start();
+        const socketIO = await server.start();
         redisConnection.redisConnect();
+        
+        return socketIO;
 
     }
     
 }
 
+
+
 const application = new Application();
-application.init();
+const socketIO = await application.init();
+
+export{
+    socketIO
+}
