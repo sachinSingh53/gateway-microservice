@@ -1,15 +1,23 @@
 
 import {GatewayCache} from '../redis/gateway.cache.js'
+import {io} from 'socket.io-client';
+import {winstonLogger} from '../../../9-jobber-shared/src/logger.js'
+import config from '../config.js';
+const log = winstonLogger('gatewaySocket','debug');
 
+let chatSocketClient;
 
 
 export class socketIOAppHandler{
     constructor(io){
         this.io = io;
         this.gatewayCache = new GatewayCache();
+        this.#chatSocketServiceIOConnections();
     }
 
     listen(){
+        this.#chatSocketServiceIOConnections();
+
         this.io.on('connection',async(socket)=>{
             
             socket.on('getLoggedInUsers', async()=>{
@@ -29,5 +37,37 @@ export class socketIOAppHandler{
                 
             });
         })
+    }
+
+    #chatSocketServiceIOConnections() {
+        chatSocketClient = io(`${config.MESSAGE_BASE_URL}`, {
+          transports: ['websocket', 'polling'],
+          secure: true
+        });
+    
+        chatSocketClient.on('connect', () => {
+          log.info('ChatService socket connected');
+        });
+    
+        chatSocketClient.on('disconnect', (reason) => {
+          log.log('error', 'ChatSocket disconnect reason:', reason);
+          chatSocketClient.connect();
+        });
+    
+        chatSocketClient.on('connect_error', (error) => {
+          log.log('error', 'ChatService socket connection error:', error);
+          chatSocketClient.connect();
+        });
+
+
+        // custom-events
+        chatSocketClient.on('message recieved',(data)=>{
+            this.io.emit('message recieved',data);
+        })
+        chatSocketClient.on('message updated',(data)=>{
+            this.io.emit('message updated',data);
+        })
+
+
     }
 }
