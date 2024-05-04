@@ -16,6 +16,7 @@ import { Server } from 'socket.io';
 import { createClient } from "redis";
 import { createAdapter } from "@socket.io/redis-adapter";
 import {socketIOAppHandler} from './sockets/socket.js'
+import { axiosMessageInstance } from './services/api/message-service.js';
 
 import authRoutes from './routes/auth.js';
 import currentUserRoutes from './routes/currentUser.js';
@@ -23,6 +24,7 @@ import searchRoutes from './routes/search.js'
 import buyerRoutes from './routes/buyer.js'
 import sellerRoutes from './routes/seller.js'
 import gigRoutes from './routes/gig.js'
+import messageRoutes from './routes/messageRoutes.js'
 
 
 const log = winstonLogger('Gateway Server', 'debug');
@@ -67,6 +69,7 @@ class GatewayServer {
                 axiosBuyerInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
                 axiosSellerInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
                 axiosGigInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
+                axiosMessageInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
             }
             next();
         });
@@ -85,6 +88,7 @@ class GatewayServer {
         app.use('/api/gateway/v1', buyerRoutes);
         app.use('/api/gateway/v1', sellerRoutes);
         app.use('/api/gateway/v1', gigRoutes);
+        app.use('/api/gateway/v1', messageRoutes);
     }
 
     #errorHandler(app) {
