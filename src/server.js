@@ -28,7 +28,7 @@ import messageRoutes from './routes/messageRoutes.js'
 
 
 const log = winstonLogger('Gateway Server', 'debug');
- let socketIO;
+//  let socketIO;
 class GatewayServer {
     #app;
 

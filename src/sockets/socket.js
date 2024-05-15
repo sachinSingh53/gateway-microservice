@@ -6,6 +6,7 @@ import config from '../config.js';
 const log = winstonLogger('gatewaySocket','debug');
 
 let chatSocketClient;
+let orderSocketClient;
 
 
 export class socketIOAppHandler{
@@ -13,10 +14,12 @@ export class socketIOAppHandler{
         this.io = io;
         this.gatewayCache = new GatewayCache();
         this.#chatSocketServiceIOConnections();
+        this.#orderSocketServiceIOConnections();
     }
 
     listen(){
         this.#chatSocketServiceIOConnections();
+        this.#orderSocketServiceIOConnections();
 
         this.io.on('connection',async(socket)=>{
             
@@ -40,6 +43,9 @@ export class socketIOAppHandler{
     }
 
     #chatSocketServiceIOConnections() {
+
+        // this is a connection for the communication between gateway and chat service
+        //this will act as a client for the chat service
         chatSocketClient = io(`${config.MESSAGE_BASE_URL}`, {
           transports: ['websocket', 'polling'],
           secure: true
@@ -67,6 +73,34 @@ export class socketIOAppHandler{
         chatSocketClient.on('message updated',(data)=>{
             this.io.emit('message updated',data);
         })
+
+
+    }
+    #orderSocketServiceIOConnections() {
+
+        // this is a connection for the communication between gateway and order service
+        //this will act as a client for the order service
+        orderSocketClient = io(`${config.ORDER_BASE_URL}`, {
+          transports: ['websocket', 'polling'],
+          secure: true
+        });
+    
+        orderSocketClient.on('connect', () => {
+          log.info('OrderService socket connected');
+        });
+    
+        orderSocketClient.on('disconnect', (reason) => {
+          log.log('error', 'OrderSocket disconnect reason:', reason);
+          orderSocketClient.connect();
+        });
+    
+        orderSocketClient.on('connect_error', (error) => {
+          log.log('error', 'OrderService socket connection error:', error);
+          orderSocketClient.connect();
+        });
+
+
+      
 
 
     }
