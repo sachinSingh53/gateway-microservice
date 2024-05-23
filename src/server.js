@@ -25,6 +25,8 @@ import buyerRoutes from './routes/buyer.js'
 import sellerRoutes from './routes/seller.js'
 import gigRoutes from './routes/gig.js'
 import messageRoutes from './routes/messageRoutes.js'
+import orderRoutes from './routes/order.js'
+import { axiosOrderInstance } from './services/api/order-service.js';
 
 
 const log = winstonLogger('Gateway Server', 'debug');
@@ -70,6 +72,7 @@ class GatewayServer {
                 axiosSellerInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
                 axiosGigInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
                 axiosMessageInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
+                axiosOrderInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
             }
             next();
         });
@@ -89,6 +92,7 @@ class GatewayServer {
         app.use('/api/gateway/v1', sellerRoutes);
         app.use('/api/gateway/v1', gigRoutes);
         app.use('/api/gateway/v1', messageRoutes);
+        app.use('/api/gateway/v1', orderRoutes);
     }
 
     #errorHandler(app) {
