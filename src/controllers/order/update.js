@@ -4,7 +4,9 @@ import { orderService } from '../../services/api/order-service.js';
 export class Update {
     async cancel(req, res) {
         const { orderId } = req.params;
+
         const { orderData, paymentIntentId } = req.body;
+
         const response = await orderService.cancelOrder(paymentIntentId, orderId, orderData);
         res.status(StatusCodes.CREATED).json({ message: response.data.message });
     }
