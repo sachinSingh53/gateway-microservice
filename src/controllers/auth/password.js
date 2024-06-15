@@ -21,7 +21,7 @@ export const resetPassword = async (req, res) => {
 export const changePassword = async (req, res) => {
     const {currentPassword, newPassword} = req.body;
     const response = await authService.changePassword(currentPassword,newPassword);
-
+    
     res.status(StatusCodes.OK).json({
         message: response.data.message,
     });

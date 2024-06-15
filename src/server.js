@@ -72,7 +72,7 @@ class GatewayServer {
                 axiosSellerInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
                 axiosGigInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
                 axiosMessageInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
-                axiosOrderInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;
+                axiosOrderInstance.defaults.headers['Authorization'] = `Bearer ${req.session.jwt}`;   
             }
             next();
         });
