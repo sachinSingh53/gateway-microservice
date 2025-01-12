@@ -1,8 +1,5 @@
-
 import { StatusCodes } from 'http-status-codes';
-
 import { messageService } from '../../services/api/message-service.js';
-
 export class Get {
     async conversation(req, res) {
         const response = await messageService.getConversation(req.params.senderUsername, req.params.receiverUsername);

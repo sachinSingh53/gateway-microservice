@@ -1,8 +1,5 @@
-
 import { StatusCodes } from 'http-status-codes';
-
 import { messageService } from '../../services/api/message-service.js';
-
 export class Create {
   async message(req, res) {
     const response = await messageService.addMessage(req.body);

@@ -1,7 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import{ gigService} from '../../services/api/gig-service.js'
 
-
 const gigById = async (req, res) => {
     const response = await gigService.getGigById(req.params.gigId);
     res.status(StatusCodes.OK).json({
@@ -17,6 +16,7 @@ const sellerGigs = async (req, res) => {
         gigs: response.data.gigs,
     });
 };
+
 const sellerPausedGigs = async (req, res) => {
     const response = await gigService.getSellerPausedGigs(req.params.sellerId);
     res.status(StatusCodes.OK).json({
@@ -33,6 +33,7 @@ const gigsByCategory = async (req, res) => {
         gigs: response.data.gigs,
     });
 };
+
 const moreGigsLikeThis = async (req, res) => {
     const response = await gigService.getMoreGigsLikeThis(req.params.gigId);
     res.status(StatusCodes.OK).json({
@@ -40,6 +41,7 @@ const moreGigsLikeThis = async (req, res) => {
         gigs: response.data.gigs,
     });
 };
+
 const topRatedGigsByCategory = async (req, res) => {
     const response = await gigService.getTopRatedGigsByCategory(req.params.username);
     res.status(StatusCodes.OK).json({
@@ -47,10 +49,6 @@ const topRatedGigsByCategory = async (req, res) => {
         gigs: response.data.gigs,
     });
 };
-
-
-
-
 
 export{
     gigById,

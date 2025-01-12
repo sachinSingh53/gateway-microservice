@@ -17,6 +17,7 @@ class Config {
         this.ORDER_BASE_URL = process.env.ORDER_BASE_URL;
         this.REVIEW_BASE_URL = process.env.REVIEW_BASE_URL;
         this.REDIS_HOST = process.env.REDIS_HOST;
+        this.ELASTIC_SEARCH_URL = process.env.ELASTIC_SEARCH_URL
     }
 }
 

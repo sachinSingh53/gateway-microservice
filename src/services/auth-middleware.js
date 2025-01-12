@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from '../config.js';
-import { NotAuthorizedError } from '../../../9-jobber-shared/src/errors.js';
+import { NotAuthorizedError } from '@sachinsingh53/jobber-shared';
 
 class AuthMiddleware {
 

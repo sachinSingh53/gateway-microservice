@@ -1,7 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import{ gigService} from '../../services/api/gig-service.js'
 
-
 export const updateGigs = async (req, res) => {
     const response = await gigService.updateGig(req.params.gigId,req.body);
     res.status(StatusCodes.OK).json({

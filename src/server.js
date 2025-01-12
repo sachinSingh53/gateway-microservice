@@ -6,9 +6,9 @@ import bodyParser from 'body-parser';
 import config from './config.js';
 
 import { axiosAuthInstance } from './services/api/auth-service.js';
-import { winstonLogger } from '../../9-jobber-shared/src/logger.js';
+import { winstonLogger } from '@sachinsingh53/jobber-shared';
 import { StatusCodes } from 'http-status-codes';
-import { CustomError } from '../../9-jobber-shared/src/errors.js';
+import { CustomError } from '@sachinsingh53/jobber-shared';
 import { axiosBuyerInstance } from './services/api/buyer-service.js';
 import { axiosSellerInstance } from './services/api/seller-service.js';
 import { axiosGigInstance } from './services/api/gig-service.js';
@@ -31,7 +31,7 @@ import { axiosOrderInstance } from './services/api/order-service.js';
 import { axiosReviewInstance } from './services/api/review-service.js';
 
 
-const log = winstonLogger('Gateway Server', 'debug');
+const log = winstonLogger(`${config.ELASTIC_SEARCH_URL}`,'Gateway Server', 'debug');
 //  let socketIO;
 class GatewayServer {
     #app;

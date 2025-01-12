@@ -8,11 +8,8 @@ class Application {
         const server = new GatewayServer(app);
         const socketIO = await server.start();
         redisConnection.redisConnect();
-        
         return socketIO;
-
     }
-    
 }
 
 
